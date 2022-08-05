@@ -4,7 +4,7 @@ from typing import Any, MutableMapping, Sequence, Type, TypeVar
 T = TypeVar("T")
 
 
-class UnregisteredTypeError(ValueError):
+class UnresolvableDependencyError(ValueError):
     pass
 
 
@@ -107,7 +107,7 @@ class DIContainer:
         """
         try:
             return self._resolve_type(type_)
-        except UnregisteredTypeError:
+        except UnresolvableDependencyError:
             pass
 
         args = self.resolve_dependencies(type_)
@@ -151,7 +151,7 @@ class DIContainer:
         elif type_ in self._instance_registry:
             return self._retrieve_registered_instance(type_)
 
-        raise UnregisteredTypeError(
+        raise UnresolvableDependencyError(
             f'Failed to resolve unregistered type "{DIContainer._format_type_name(type)}"'
         )
 
