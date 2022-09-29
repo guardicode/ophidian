@@ -1,6 +1,6 @@
 import inspect
 from contextlib import suppress
-from typing import Any, MutableMapping, Sequence, Type, TypeVar
+from typing import Any, MutableMapping, Sequence, Type, TypeVar, no_type_check
 
 T = TypeVar("T")
 
@@ -13,6 +13,9 @@ class UnregisteredConventionError(ValueError):
     pass
 
 
+# Mypy doesn't handle cases where abstract class is passed as Type[...]
+# https://github.com/python/mypy/issues/4717
+# We are using typing.no_type_check to mitigate these errors
 class DIContainer:
     """
     A dependency injection (DI) container that uses type annotations to resolve and inject
@@ -24,6 +27,7 @@ class DIContainer:
         self._instance_registry = {}
         self._convention_registry = {}
 
+    @no_type_check
     def register(self, interface: Type[T], concrete_type: Type[T]):
         """
         Register a concrete `type` that satisfies a given interface.
@@ -53,6 +57,7 @@ class DIContainer:
         self._type_registry[interface] = concrete_type
         DIContainer._del_key(self._instance_registry, interface)
 
+    @no_type_check
     def register_instance(self, interface: Type[T], instance: T):
         """
         Register a concrete instance that satisfies a given interface.
@@ -71,6 +76,7 @@ class DIContainer:
         self._instance_registry[interface] = instance
         DIContainer._del_key(self._type_registry, interface)
 
+    @no_type_check
     def register_convention(self, type_: Type[T], name: str, instance: T):
         """
         Register an instance as a convention
@@ -99,6 +105,7 @@ class DIContainer:
         """
         self._convention_registry[(type_, name)] = instance
 
+    @no_type_check
     def resolve(self, type_: Type[T]) -> T:
         """
         Resolves all dependencies and returns a new instance of `type_` using constructor dependency
