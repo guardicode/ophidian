@@ -1,0 +1,34 @@
+{
+  "template": "/home/msalvatore/git/infection-monkey-cookiecutter",
+  "commit": "392f947c5dba63901c489abccba9a0bbcc3d6aab",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "project_name": "ophidian",
+      "__project_slug": "ophidian",
+      "full_name": "Mike Salvatore",
+      "email": "mike.s.salvatore@gmail.com",
+      "github_repo": "ophidian",
+      "platform": "github",
+      "org": "guardicode",
+      "github_url": "guardicode",
+      "url": "https://github.com/guardicode/ophidian",
+      "__year": "2023",
+      "license": "GPLv3",
+      "project_short_description": "A dependency injection container for Python",
+      "python_major_version": "3",
+      "python_minor_version": "11",
+      "hook_shellcheck": "n",
+      "codecov": "y",
+      "exclude_these_file_in_flake8": "vulture_allowlist.py",
+      "_black_version": "23.9.1",
+      "_dlint_version": "0.14.1",
+      "_flake8_version": "6.0.0",
+      "_isort_version": "5.12.0",
+      "_mypy_version": "1.5.1",
+      "_vulture_version": "2.9.1",
+      "_template": "/home/msalvatore/git/infection-monkey-cookiecutter"
+    }
+  },
+  "directory": null
+}
