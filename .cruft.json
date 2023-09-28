@@ -1,6 +1,6 @@
 {
   "template": "/home/msalvatore/git/infection-monkey-cookiecutter",
-  "commit": "dd046a333d6ac5ac21dc3f40cbd40211fd4d4cd6",
+  "commit": "6d00c9773e32b0d5dc525ed43d57e246d333cc03",
   "checkout": null,
   "context": {
     "cookiecutter": {

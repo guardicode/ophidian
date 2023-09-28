@@ -7,6 +7,9 @@ requires-python = "^3.11"
 [tool.black]
 line-length = 100
 
+[tool.cruft]
+skip = ["ophidian/__init__.py", "README.md", "CHANGELOG.md"]
+
 [tool.isort]
 known_first_party = "ophidian"
 line_length = 100
