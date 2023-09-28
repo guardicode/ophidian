@@ -159,6 +159,95 @@ string parameter named "config_file_path". See [Primitive Dependencies by Mark
 Seemann](https://blog.ploeh.dk/2012/07/02/PrimitiveDependencies/) for more
 information about conventions.
 
+## Documentation
+### DIContainer
+
+```python
+class DIContainer()
+```
+
+A dependency injection (DI) container that uses type annotations to resolve and
+inject dependencies.
+
+#### \_\_init\_\_
+
+```python
+def __init__()
+```
+
+#### register
+
+```python
+@no_type_check
+def register(interface: Type[T], concrete_type: Type[T])
+```
+
+Register a concrete `type` that satisfies a given interface.
+
+:param interface: An interface or abstract base class that other classes depend
+upon</br>
+:param concrete_type: A `type` (class) that implements `interface`</br>
+:raises TypeError: If `concrete_type` is not a class, or not a subclass of
+`interface`
+
+
+#### register\_instance
+
+```python
+@no_type_check
+def register_instance(interface: Type[T], instance: T)
+```
+
+Register a concrete instance that satisfies a given interface.
+
+:param interface: An interface or abstract base class that other classes depend
+upon</br>
+:param instance: An instance (object) of a `type` that implements
+`interface`</br>
+:raises TypeError: If `instance` is not an instance of `interface`
+
+
+#### register\_convention
+
+```python
+@no_type_check
+def register_convention(type_: Type[T], name: str, instance: T)
+```
+
+Register an instance as a convention
+
+At times — particularly when dealing with primitive types — it can be useful to
+define a convention for how dependencies should be resolved. For example, you
+might want any class that specifies `hostname: str` in its constructor to
+receive the hostname of the system it's running on. Registering a convention
+allows you to assign an object instance to a type, name pair.
+
+**Example:**
+
+        class TestClass:
+            def __init__(self, hostname: str):
+                self.hostname = hostname
+
+        di_container = DIContainer()
+        di_container.register_convention(str, "hostname", "my_hostname.domain")
+
+        test = di_container.resolve(TestClass)
+        assert test.hostname == "my_hostname.domain"
+
+:param type_: The `type` (class) of the dependency</br>
+:param name: The name of the dependency parameter</br>
+:param instance: An instance (object) of `type_` that will be injected into constructors
+                 that specify `[name]: [type_]` as parameters
+
+### Errors
+#### UnresolvableDependencyError
+
+```python
+class UnresolvableDependencyError(ValueError):
+```
+
+Raised when one or more dependencies cannot be successfully resolved.
+
 ## Running the tests
 
 Running the tests is as simple as `poetry install && poetry run pytest`
