@@ -1,6 +1,6 @@
 {
   "template": "/home/msalvatore/git/infection-monkey-cookiecutter",
-  "commit": "392f947c5dba63901c489abccba9a0bbcc3d6aab",
+  "commit": "62aef23bcc15454f7603fc017654ce47d8bf5ba1",
   "checkout": null,
   "context": {
     "cookiecutter": {
@@ -15,6 +15,7 @@
       "url": "https://github.com/guardicode/ophidian",
       "__year": "2023",
       "license": "GPLv3",
+      "versioning_scheme": "PEP440",
       "project_short_description": "A dependency injection container for Python",
       "python_major_version": "3",
       "python_minor_version": "11",

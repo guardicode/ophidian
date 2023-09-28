@@ -1,18 +1,18 @@
 # ophiDIan
 
 <div align="center">
-    <img src="./images/mascot.png", width="300">
+    <img src="https://github.com/guardicode/ophidian/raw/main/images/mascot.png", width="300">
 </div>
 
 ---
 
 <div align="center">
 
-[![PyPI version](https://badge.fury.io/py/ophidian.svg)](http://badge.fury.io/py/ophidian)
+[![PyPI version](https://badge.fury.io/py/ophidian-di.svg)](http://badge.fury.io/py/ophidian-di)
 ![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Fguardicode%2Fophidian%2Fmain%2Fpyproject.toml)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://timothycrosley.github.io/isort/)
-[![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://pypi.python.org/pypi/ophidian/)
+[![License](https://img.shields.io/pypi/l/ophidian-di)](https://img.shields.io/pypi/l/ophidian-di)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/guardicode/ophidian)](https://img.shields.io/github/issues-pr/guardicode/ophidian)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
@@ -26,11 +26,15 @@
 ophiDIan is a Dependency Injection (DI) container for Python. Unlike other DI
 containers that utilize decorators or configuration files to accomplish their
 goal, ophiDIan uses type hints to identify and resolve dependencies. In other
-words, by using type hinting to resolve dependencies, ophidIAn avoids making
+words, by using type hinting to resolve dependencies, ophiDIan avoids making
 your components dependent upon the DI framework.
 
 Ophidian follows the [Register, Resolve, Release (RRR)
-pattern](https://blog.ploeh.dk/2010/09/29/TheRegisterResolveReleasepattern/)
+pattern](https://blog.ploeh.dk/2010/09/29/TheRegisterResolveReleasepattern/).
+
+## Installation
+
+Install with `pip install ophidian-di`
 
 ## Tutorial
 ### Dependency definitions
@@ -85,26 +89,26 @@ class TestClass3:
 
 ### RRR
 
-The first step in the RRR pattern is to **R**egister dependencies. This can be
+The first step in the RRR pattern is to *R*egister dependencies. This can be
 performed using either the `register()` or `register_instance()` methods. Next,
-objects can be built by **R**esolving. Finally, when the dependency is no
-longer needed, it can be released.
+objects can be built by *R*esolving. Finally, when the dependency is no
+longer needed, it can be *R*eleased.
 
 ```python
 from ophidian import DIContainer
 
+dependency_b_instance = DependencyB("Mike")
+
 di_container = DIContainer()
 di_container.register(AbstractA, DependencyA)
-
-my_dependency_b = DependencyB("Mike")
-di_container.register(AbstractA, DependencyA)
-di_container.register_instance(AbstractB, my_dependency_b)
+di_container.register_instance(AbstractB, dependency_b_instance)
 
 test_class_1 = di_container.resolve(TestClass1)
 test_class_2 = di_container.resolve(TestClass2)
 test_class_3 = di_container.resolve(TestClass3)
 
 assert id(test_class_1.a) != id(test_class_3.a)
+assert id(test_class_2.b) == id(dependency_b_instance)
 assert id(test_class_2.b) == id(test_class_3.b)
 assert isinstance(test_class_1.a, AbstractA)
 assert isinstance(test_class_1.a, DependencyA)
@@ -154,3 +158,96 @@ the code: components that depend upon the configuration file path expect a
 string parameter named "config_file_path". See [Primitive Dependencies by Mark
 Seemann](https://blog.ploeh.dk/2012/07/02/PrimitiveDependencies/) for more
 information about conventions.
+
+## Documentation
+### DIContainer
+
+```python
+class DIContainer()
+```
+
+A dependency injection (DI) container that uses type annotations to resolve and
+inject dependencies.
+
+#### \_\_init\_\_
+
+```python
+def __init__()
+```
+
+#### register
+
+```python
+@no_type_check
+def register(interface: Type[T], concrete_type: Type[T])
+```
+
+Register a concrete `type` that satisfies a given interface.
+
+:param interface: An interface or abstract base class that other classes depend
+upon</br>
+:param concrete_type: A `type` (class) that implements `interface`</br>
+:raises TypeError: If `concrete_type` is not a class, or not a subclass of
+`interface`
+
+
+#### register\_instance
+
+```python
+@no_type_check
+def register_instance(interface: Type[T], instance: T)
+```
+
+Register a concrete instance that satisfies a given interface.
+
+:param interface: An interface or abstract base class that other classes depend
+upon</br>
+:param instance: An instance (object) of a `type` that implements
+`interface`</br>
+:raises TypeError: If `instance` is not an instance of `interface`
+
+
+#### register\_convention
+
+```python
+@no_type_check
+def register_convention(type_: Type[T], name: str, instance: T)
+```
+
+Register an instance as a convention
+
+At times — particularly when dealing with primitive types — it can be useful to
+define a convention for how dependencies should be resolved. For example, you
+might want any class that specifies `hostname: str` in its constructor to
+receive the hostname of the system it's running on. Registering a convention
+allows you to assign an object instance to a type, name pair.
+
+**Example:**
+
+        class TestClass:
+            def __init__(self, hostname: str):
+                self.hostname = hostname
+
+        di_container = DIContainer()
+        di_container.register_convention(str, "hostname", "my_hostname.domain")
+
+        test = di_container.resolve(TestClass)
+        assert test.hostname == "my_hostname.domain"
+
+:param type_: The `type` (class) of the dependency</br>
+:param name: The name of the dependency parameter</br>
+:param instance: An instance (object) of `type_` that will be injected into constructors
+                 that specify `[name]: [type_]` as parameters
+
+### Errors
+#### UnresolvableDependencyError
+
+```python
+class UnresolvableDependencyError(ValueError):
+```
+
+Raised when one or more dependencies cannot be successfully resolved.
+
+## Running the tests
+
+Running the tests is as simple as `poetry install && poetry run pytest`

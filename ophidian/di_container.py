@@ -6,6 +6,8 @@ T = TypeVar("T")
 
 
 class UnresolvableDependencyError(ValueError):
+    """Raised when one or more dependencies cannot be successfully resolved"""
+
     pass
 
 
