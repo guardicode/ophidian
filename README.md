@@ -92,7 +92,7 @@ class TestClass3:
 The first step in the RRR pattern is to **R**egister dependencies. This can be
 performed using either the `register()` or `register_instance()` methods. Next,
 objects can be built by **R**esolving. Finally, when the dependency is no
-longer needed, it can be released.
+longer needed, it can be **R**eleased.
 
 ```python
 from ophidian import DIContainer
