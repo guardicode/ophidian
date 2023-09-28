@@ -26,7 +26,7 @@
 ophiDIan is a Dependency Injection (DI) container for Python. Unlike other DI
 containers that utilize decorators or configuration files to accomplish their
 goal, ophiDIan uses type hints to identify and resolve dependencies. In other
-words, by using type hinting to resolve dependencies, ophidIAn avoids making
+words, by using type hinting to resolve dependencies, ophiDIan avoids making
 your components dependent upon the DI framework.
 
 Ophidian follows the [Register, Resolve, Release (RRR)
