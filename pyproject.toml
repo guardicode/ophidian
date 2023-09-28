@@ -32,7 +32,7 @@ paths = ["ophidian", "vulture_allowlist.py"]
 
 [tool.poetry]
 name = "ophidian"
-version = "v0.0.1"
+version = "v0.1.0"
 description = "A dependency injection container for Python"
 authors = ["Mike Salvatore <mike.s.salvatore@gmail.com>"]
 license = "GPLv3"
