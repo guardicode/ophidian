@@ -30,7 +30,7 @@ words, by using type hinting to resolve dependencies, ophiDIan avoids making
 your components dependent upon the DI framework.
 
 Ophidian follows the [Register, Resolve, Release (RRR)
-pattern](https://blog.ploeh.dk/2010/09/29/TheRegisterResolveReleasepattern/)
+pattern](https://blog.ploeh.dk/2010/09/29/TheRegisterResolveReleasepattern/).
 
 ## Installation
 
