@@ -97,18 +97,18 @@ longer needed, it can be *R*eleased.
 ```python
 from ophidian import DIContainer
 
+dependency_b_instance = DependencyB("Mike")
+
 di_container = DIContainer()
 di_container.register(AbstractA, DependencyA)
-
-my_dependency_b = DependencyB("Mike")
-di_container.register(AbstractA, DependencyA)
-di_container.register_instance(AbstractB, my_dependency_b)
+di_container.register_instance(AbstractB, dependency_b_instance)
 
 test_class_1 = di_container.resolve(TestClass1)
 test_class_2 = di_container.resolve(TestClass2)
 test_class_3 = di_container.resolve(TestClass3)
 
 assert id(test_class_1.a) != id(test_class_3.a)
+assert id(test_class_2.b) == id(dependency_b_instance)
 assert id(test_class_2.b) == id(test_class_3.b)
 assert isinstance(test_class_1.a, AbstractA)
 assert isinstance(test_class_1.a, DependencyA)
