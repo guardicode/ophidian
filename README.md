@@ -158,3 +158,7 @@ the code: components that depend upon the configuration file path expect a
 string parameter named "config_file_path". See [Primitive Dependencies by Mark
 Seemann](https://blog.ploeh.dk/2012/07/02/PrimitiveDependencies/) for more
 information about conventions.
+
+## Running the tests
+
+Running the tests is as simple as `poetry install && poetry run pytest`
