@@ -31,8 +31,8 @@ exclude=[]
 paths = ["ophidian", "vulture_allowlist.py"]
 
 [tool.poetry]
-name = "ophidian"
 version = "v0.1.0"
+name = "ophidian-di"
 description = "A dependency injection container for Python"
 authors = ["Mike Salvatore <mike.s.salvatore@gmail.com>"]
 license = "GPLv3"
@@ -42,6 +42,7 @@ classifiers=[
 ]
 repository = "https://github.com/guardicode/ophidian"
 readme = "README.md"
+packages = [{include="ophidian"}]
 include = ["CHANGELOG.md"]
 
 [tool.poetry.dependencies]
