@@ -32,6 +32,10 @@ your components dependent upon the DI framework.
 Ophidian follows the [Register, Resolve, Release (RRR)
 pattern](https://blog.ploeh.dk/2010/09/29/TheRegisterResolveReleasepattern/)
 
+## Installation
+
+Install with `pip install ophidian-di`
+
 ## Tutorial
 ### Dependency definitions
 
