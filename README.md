@@ -1,7 +1,7 @@
 # ophiDIan
 
 <div align="center">
-    <img src="./images/mascot.png", width="300">
+    <img src="https://github.com/guardicode/ophidian/raw/main/images/mascot.png", width="300">
 </div>
 
 ---
