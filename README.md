@@ -8,11 +8,11 @@
 
 <div align="center">
 
-[![PyPI version](https://badge.fury.io/py/ophidian-di.svg)](http://badge.fury.io/py/ophidian-di)
+[![PyPI version](https://badge.fury.io/py/ophidian.svg)](http://badge.fury.io/py/ophidian)
 ![Python Version from PEP 621 TOML](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Fguardicode%2Fophidian%2Fmain%2Fpyproject.toml)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://timothycrosley.github.io/isort/)
-[![License](https://img.shields.io/pypi/l/ophidian-di)](https://img.shields.io/pypi/l/ophidian-di)
+[![License](https://img.shields.io/pypi/l/ophidian)](https://img.shields.io/pypi/l/ophidian)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/guardicode/ophidian)](https://img.shields.io/github/issues-pr/guardicode/ophidian)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
@@ -34,7 +34,7 @@ pattern](https://blog.ploeh.dk/2010/09/29/TheRegisterResolveReleasepattern/).
 
 ## Installation
 
-Install with `pip install ophidian-di`
+Install with `pip install ophidian`
 
 ## Tutorial
 ### Dependency definitions
