@@ -47,18 +47,18 @@ class TestClass3:
 
 
 @pytest.fixture
-def container():
+def container() -> DIContainer:
     return DIContainer()
 
 
-def test_register_resolve(container):
+def test_register_resolve(container: DIContainer):
     container.register(IServiceA, ServiceA)
     test_1 = container.resolve(TestClass1)
 
     assert isinstance(test_1.service_a, ServiceA)
 
 
-def test_correct_instance_type_injected(container):
+def test_correct_instance_type_injected(container: DIContainer):
     container.register(IServiceA, ServiceA)
     container.register(IServiceB, ServiceB)
     test_1 = container.resolve(TestClass1)
@@ -68,7 +68,7 @@ def test_correct_instance_type_injected(container):
     assert isinstance(test_2.service_b, ServiceB)
 
 
-def test_multiple_correct_instance_types_injected(container):
+def test_multiple_correct_instance_types_injected(container: DIContainer):
     container.register(IServiceA, ServiceA)
     container.register(IServiceB, ServiceB)
     test_3 = container.resolve(TestClass3)
@@ -77,7 +77,7 @@ def test_multiple_correct_instance_types_injected(container):
     assert isinstance(test_3.service_b, ServiceB)
 
 
-def test_register_instance(container):
+def test_register_instance(container: DIContainer):
     service_a_instance = ServiceA()
 
     container.register_instance(IServiceA, service_a_instance)
@@ -86,7 +86,7 @@ def test_register_instance(container):
     assert id(service_a_instance) == id(test_1.service_a)
 
 
-def test_register_multiple_instances(container):
+def test_register_multiple_instances(container: DIContainer):
     service_a_instance = ServiceA()
     service_b_instance = ServiceB()
 
@@ -98,7 +98,7 @@ def test_register_multiple_instances(container):
     assert id(service_b_instance) == id(test_3.service_b)
 
 
-def test_register_mixed_instance_and_type(container):
+def test_register_mixed_instance_and_type(container: DIContainer):
     service_a_instance = ServiceA()
 
     container.register_instance(IServiceA, service_a_instance)
@@ -112,12 +112,12 @@ def test_register_mixed_instance_and_type(container):
     assert id(test_2.service_b) != id(test_3.service_b)
 
 
-def test_unregistered_type(container):
+def test_unregistered_type(container: DIContainer):
     with pytest.raises(UnresolvableDependencyError):
         container.resolve(TestClass1)
 
 
-def test_type_registration_overwritten(container):
+def test_type_registration_overwritten(container: DIContainer):
     class ServiceA2(IServiceA):
         def do_something(self):
             pass
@@ -129,7 +129,7 @@ def test_type_registration_overwritten(container):
     assert isinstance(test_1.service_a, ServiceA2)
 
 
-def test_instance_registration_overwritten(container):
+def test_instance_registration_overwritten(container: DIContainer):
     service_a_instance_1 = ServiceA()
     service_a_instance_2 = ServiceA()
 
@@ -141,7 +141,7 @@ def test_instance_registration_overwritten(container):
     assert id(test_1.service_a) == id(service_a_instance_2)
 
 
-def test_type_overrides_instance(container):
+def test_type_overrides_instance(container: DIContainer):
     service_a_instance = ServiceA()
 
     container.register_instance(IServiceA, service_a_instance)
@@ -152,7 +152,7 @@ def test_type_overrides_instance(container):
     assert isinstance(test_1.service_a, ServiceA)
 
 
-def test_instance_overrides_type(container):
+def test_instance_overrides_type(container: DIContainer):
     service_a_instance = ServiceA()
 
     container.register(IServiceA, ServiceA)
@@ -162,7 +162,7 @@ def test_instance_overrides_type(container):
     assert id(test_1.service_a) == id(service_a_instance)
 
 
-def test_release_type(container):
+def test_release_type(container: DIContainer):
     container.register(IServiceA, ServiceA)
     container.release(IServiceA)
 
@@ -170,7 +170,7 @@ def test_release_type(container):
         container.resolve(TestClass1)
 
 
-def test_release_instance(container):
+def test_release_instance(container: DIContainer):
     service_a_instance = ServiceA()
     container.register_instance(IServiceA, service_a_instance)
 
@@ -196,7 +196,7 @@ class TestClass4:
         self.service_c = service_c
 
 
-def test_recursive_resolution__depth_2(container):
+def test_recursive_resolution__depth_2(container: DIContainer):
     service_a_instance = ServiceA()
     container.register_instance(IServiceA, service_a_instance)
     container.register(IServiceC, ServiceC)
@@ -224,7 +224,7 @@ class TestClass5:
         self.service_d = service_d
 
 
-def test_recursive_resolution__depth_3(container):
+def test_recursive_resolution__depth_3(container: DIContainer):
     container.register(IServiceA, ServiceA)
     container.register(IServiceB, ServiceB)
     container.register(IServiceC, ServiceC)
@@ -238,7 +238,7 @@ def test_recursive_resolution__depth_3(container):
     assert isinstance(test5.service_d.service_c.service_a, ServiceA)
 
 
-def test_resolve_registered_interface(container):
+def test_resolve_registered_interface(container: DIContainer):
     container.register(IServiceA, ServiceA)
 
     resolved_instance = container.resolve(IServiceA)
@@ -246,7 +246,7 @@ def test_resolve_registered_interface(container):
     assert isinstance(resolved_instance, ServiceA)
 
 
-def test_resolve_registered_instance(container):
+def test_resolve_registered_instance(container: DIContainer):
     service_a_instance = ServiceA()
     container.register_instance(IServiceA, service_a_instance)
 
@@ -255,7 +255,7 @@ def test_resolve_registered_instance(container):
     assert id(service_a_actual_instance) == id(service_a_instance)
 
 
-def test_resolve_dependencies(container):
+def test_resolve_dependencies(container: DIContainer):
     container.register(IServiceA, ServiceA)
     container.register(IServiceB, ServiceB)
 
@@ -265,18 +265,18 @@ def test_resolve_dependencies(container):
     assert isinstance(dependencies[1], ServiceB)
 
 
-def test_register_instance_as_type(container):
+def test_register_instance_as_type(container: DIContainer):
     service_a_instance = ServiceA()
     with pytest.raises(TypeError):
         container.register(IServiceA, service_a_instance)
 
 
-def test_register_conflicting_type(container):
+def test_register_conflicting_type(container: DIContainer):
     with pytest.raises(TypeError):
         container.register(IServiceA, ServiceB)
 
 
-def test_register_instance_with_conflicting_type(container):
+def test_register_instance_with_conflicting_type(container: DIContainer):
     service_b_instance = ServiceB()
     with pytest.raises(TypeError):
         container.register_instance(IServiceA, service_b_instance)
@@ -289,7 +289,7 @@ class TestClass6:
         self.my_str = my_str
 
 
-def test_register_convention(container):
+def test_register_convention(container: DIContainer):
     my_str = "test_string"
     container.register_convention(str, "my_str", my_str)
 
@@ -306,7 +306,7 @@ class TestClass7:
         self.my_str2 = my_str2
 
 
-def test_register_convention__multiple_parameters_same_type(container):
+def test_register_convention__multiple_parameters_same_type(container: DIContainer):
     my_str1 = "s1"
     my_str2 = "s2"
     container.register_convention(str, "my_str2", my_str2)
@@ -325,7 +325,7 @@ class TestClass8:
         self.my_int = my_int
 
 
-def test_register_convention__multiple_parameters_different_types(container):
+def test_register_convention__multiple_parameters_different_types(container: DIContainer):
     my_str = "test_string"
     my_int = 42
     container.register_convention(str, "my_str", my_str)
@@ -344,7 +344,7 @@ class TestClass9:
         self.my_str = my_str
 
 
-def test_register_convention__type_properly_resolved(container):
+def test_register_convention__type_properly_resolved(container: DIContainer):
     my_str = "test_string"
 
     container.register(IServiceA, ServiceA)
@@ -355,7 +355,7 @@ def test_register_convention__type_properly_resolved(container):
     assert test_9.my_str == my_str
 
 
-def test_register_convention__instance_properly_resolved(container):
+def test_register_convention__instance_properly_resolved(container: DIContainer):
     service_a_instance = ServiceA()
     my_str = "test_string"
 
@@ -367,7 +367,7 @@ def test_register_convention__instance_properly_resolved(container):
     assert test_9.my_str == my_str
 
 
-def test_release_convention(container):
+def test_release_convention(container: DIContainer):
     my_str = "test_string"
     container.register_convention(str, "my_str", my_str)
     container.release_convention(str, "my_str")
@@ -386,19 +386,19 @@ class HasDefault:
         self.dependency = dependency
 
 
-def test_handle_default_parameter__no_dependency_registered(container):
+def test_handle_default_parameter__no_dependency_registered(container: DIContainer):
     has_default = container.resolve(HasDefault)
     assert has_default.dependency.my_int == 99
 
 
-def test_handle_default_parameter__dependency_registered(container):
+def test_handle_default_parameter__dependency_registered(container: DIContainer):
     container.register(Dependency, Dependency)
 
     has_default = container.resolve(HasDefault)
     assert has_default.dependency.my_int == 42
 
 
-def test_handle_default_parameter__skip_default(container):
+def test_handle_default_parameter__skip_default(container: DIContainer):
     class HasDefault_2_Parameters:
         def __init__(self, dependency: Dependency = Dependency(99), my_str: str = "hello"):
             self.dependency = dependency
