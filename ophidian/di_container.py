@@ -201,6 +201,7 @@ class DIContainer:
 
         raise UnresolvableDependencyError(f'No default found for "{name}"')
 
+    @no_type_check
     def release(self, interface: type[T]):
         """
         Deregister an interface
@@ -210,6 +211,7 @@ class DIContainer:
         DIContainer._del_key(self._type_registry, interface)
         DIContainer._del_key(self._instance_registry, interface)
 
+    @no_type_check
     def release_convention(self, type_: type[T], name: str):
         """
         Deregister a convention
