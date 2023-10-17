@@ -1,6 +1,7 @@
 import inspect
+from collections.abc import MutableMapping, Sequence
 from contextlib import suppress
-from typing import Any, MutableMapping, Sequence, Type, TypeVar, no_type_check
+from typing import Any, TypeVar, no_type_check
 
 T = TypeVar("T")
 
@@ -30,7 +31,7 @@ class DIContainer:
         self._convention_registry = {}
 
     @no_type_check
-    def register(self, interface: Type[T], concrete_type: Type[T]):
+    def register(self, interface: type[T], concrete_type: type[T]):
         """
         Register a concrete `type` that satisfies a given interface.
 
@@ -60,7 +61,7 @@ class DIContainer:
         DIContainer._del_key(self._instance_registry, interface)
 
     @no_type_check
-    def register_instance(self, interface: Type[T], instance: T):
+    def register_instance(self, interface: type[T], instance: T):
         """
         Register a concrete instance that satisfies a given interface.
 
@@ -79,7 +80,7 @@ class DIContainer:
         DIContainer._del_key(self._type_registry, interface)
 
     @no_type_check
-    def register_convention(self, type_: Type[T], name: str, instance: T):
+    def register_convention(self, type_: type[T], name: str, instance: T):
         """
         Register an instance as a convention
 
@@ -108,7 +109,7 @@ class DIContainer:
         self._convention_registry[(type_, name)] = instance
 
     @no_type_check
-    def resolve(self, type_: Type[T]) -> T:
+    def resolve(self, type_: type[T]) -> T:
         """
         Resolves all dependencies and returns a new instance of `type_` using constructor dependency
         injection. Note that only positional arguments or arguments with defaults are resolved.
@@ -129,7 +130,7 @@ class DIContainer:
         args = self.resolve_dependencies(type_)
         return type_(*args)
 
-    def resolve_dependencies(self, type_: Type[T]) -> Sequence[Any]:
+    def resolve_dependencies(self, type_: type[T]) -> Sequence[Any]:
         """
         Resolves all dependencies of `type_` and returns a Sequence of objects
         that correspond `type_`'s dependencies. Note that only positional
@@ -163,7 +164,7 @@ class DIContainer:
 
         return tuple(args)
 
-    def _resolve_convention(self, type_: Type[T], name: str) -> T:
+    def _resolve_convention(self, type_: type[T], name: str) -> T:
         convention_identifier = (type_, name)
         try:
             return self._convention_registry[convention_identifier]
@@ -172,7 +173,7 @@ class DIContainer:
                 f"Failed to resolve unregistered convention {convention_identifier}"
             )
 
-    def _resolve_type(self, type_: Type[T]) -> T:
+    def _resolve_type(self, type_: type[T]) -> T:
         if type_ in self._type_registry:
             return self._construct_new_instance(type_)
 
@@ -183,7 +184,7 @@ class DIContainer:
             f'Failed to resolve unregistered type "{DIContainer._format_type_name(type)}"'
         )
 
-    def _construct_new_instance(self, arg_type: Type[T]) -> T:
+    def _construct_new_instance(self, arg_type: type[T]) -> T:
         try:
             return self._type_registry[arg_type]()
         except TypeError:
@@ -191,7 +192,7 @@ class DIContainer:
             # construct an instance of arg_type with all of the requesite dependencies injected.
             return self.resolve(self._type_registry[arg_type])
 
-    def _retrieve_registered_instance(self, arg_type: Type[T]) -> T:
+    def _retrieve_registered_instance(self, arg_type: type[T]) -> T:
         return self._instance_registry[arg_type]
 
     def _resolve_default(self, name: str, default: T) -> T:
@@ -200,7 +201,7 @@ class DIContainer:
 
         raise UnresolvableDependencyError(f'No default found for "{name}"')
 
-    def release(self, interface: Type[T]):
+    def release(self, interface: type[T]):
         """
         Deregister an interface
 
@@ -209,7 +210,7 @@ class DIContainer:
         DIContainer._del_key(self._type_registry, interface)
         DIContainer._del_key(self._instance_registry, interface)
 
-    def release_convention(self, type_: Type[T], name: str):
+    def release_convention(self, type_: type[T], name: str):
         """
         Deregister a convention
 
@@ -220,7 +221,7 @@ class DIContainer:
         DIContainer._del_key(self._convention_registry, convention_identifier)
 
     @staticmethod
-    def _format_type_name(type_: Type) -> str:
+    def _format_type_name(type_: type) -> str:
         try:
             return type_.__name__
         except AttributeError:
