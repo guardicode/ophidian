@@ -21,7 +21,7 @@
 </div>
 
 ---
-## ⚠️ATTENTION⚠️
+# ⚠️ ATTENTION ⚠️
 
 The `ophidian-di` package has been deprecated. Please use
 [ophidian](https://pypi.org/project/ophidian/) instead.
