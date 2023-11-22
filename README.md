@@ -21,6 +21,11 @@
 </div>
 
 ---
+## ⚠️ATTENTION⚠️
+
+The `ophidian-di` package has been deprecated. Please use
+[ophidian](https://pypi.org/project/ophidian/) instead.
+
 ## Description
 
 ophiDIan is a Dependency Injection (DI) container for Python. Unlike other DI
